@@ -101,7 +101,7 @@ def plot_graphics(task_number, task_name, numbers):
     plt.ylabel(y_cdf_label)
     plt.title(cdf_title)
     plt.legend()
-    plt.savefig(f'{full_path_graphics}/{task_name}-{task_number}-pdf.png')
+    plt.savefig(f'{full_path_graphics}/{task_name}-{task_number}-сdf.png')
 
 
 def task_1():
