@@ -52,7 +52,7 @@ def irngeo_2(p):
 
 # geom_distribution_3
 def irngeo_3(p):
-    return round(math.log(random.random(), math.e) / math.log(1 - p, math.e))
+    return math.ceil(math.log(random.random(), math.e) / math.log(1 - p, math.e))
 
 
 # poisson_distribution_1
@@ -85,3 +85,7 @@ def irnpsn(mu):
             m += 1
 
         return m
+
+
+
+

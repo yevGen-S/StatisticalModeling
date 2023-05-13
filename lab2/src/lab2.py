@@ -4,6 +4,7 @@ from LhW import *
 import matplotlib.pyplot as plt
 import numpy as np
 import mpmath
+from scipy.stats import chisquare
 
 absolute_path = '/'.join(os.path.dirname(__file__).split('/')[:-1])
 
@@ -28,8 +29,10 @@ def show_plot(numbers, task=1, **kwargs):
     p = kwargs.get('p', 0.5)
     mu = kwargs.get('mu', 10)
     number_in_task = kwargs.get('number_in_task', 1)
+    dop_task = kwargs.get('dop')
 
-    tasks = ['uniform distribution', 'binomial distribution', 'geom distribution', 'poisson distribution']
+    tasks = ['uniform distribution', 'binomial distribution', 'geom distribution', 'poisson distribution',
+             "poisson distr additional task"]
 
     x = []
     y_pdf = []
@@ -70,7 +73,12 @@ def show_plot(numbers, task=1, **kwargs):
     plt.ylabel(y_pdf_label)
     plt.legend(legend)
     plt.title(pdf_title)
-    plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{number_in_task}-pdf.png')
+
+    if dop_task:
+        task = 5
+        plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{dop_task}-pdf.png')
+    else:
+        plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{number_in_task}-pdf.png')
 
     plt.figure()
     plt.hist(numbers, density=True, cumulative=True, edgecolor='black')
@@ -80,13 +88,18 @@ def show_plot(numbers, task=1, **kwargs):
     plt.legend(legend)
     plt.title(cdf_title)
 
-    plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{number_in_task}-cdf.png')
+    if dop_task:
+        task = 5
+        plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{dop_task}-cdf.png')
+    else:
+        plt.savefig(f'{full_path_graphics}/{tasks[task - 1]}-{task}-{number_in_task}-cdf.png')
 
 
 def print_math_expect_and_dispersion(task, distr_name, m_th, d_th, m_emp, d_emp):
     print(f' Задание {task} - {distr_name}')
     print(f'| Теоретические: | \t@M@ = {m_th}  | \t@D@ = {d_th}  |')
     print(f'| Эмпирические:  | \t@M@ = {m_emp} | \t@D@ = {d_emp} |')
+    print(f'| Погрешность    | \t@M@ = {math.fabs(m_th - m_emp)} | \t@D@ = {math.fabs(d_th - d_emp)} |')
     print('-------------------------------------------------------')
 
 
@@ -150,7 +163,8 @@ def task_4(poisson_distribution, number):
 def additional_task_4():
     amount = 100
     mu = 4
-    intervals_amount = math.ceil(1 + math.log2(amount))
+    # intervals_amount = math.ceil(1 + math.log2(amount))
+    intervals_amount = 10
     distrs = [irnpoi, irnpsn]
 
     for i in range(2):
@@ -160,7 +174,7 @@ def additional_task_4():
         for _ in range(amount):
             numbers.append(poisson_distribution(mu))
 
-        show_plot(numbers, task=4, mu=mu)
+        show_plot(numbers, task=4, mu=mu, dop=i+1)
 
         interval_width = (max(numbers) - min(numbers)) / (intervals_amount - 1)
         intervals = []
@@ -211,23 +225,25 @@ def additional_task_4():
         print(f'Алгоритм {i + 1}:')
         print(f'\tНаблюдаемое значение хи-квадрат: {sum(frequencies_dispersion)}')
         print(f'\tКритическое значение хи-квадрат: 124.342\n')
+        print(new_intervals_amount)
 
 
 if __name__ == '__main__':
-    # Равномерное распределение
-    task_1()
-
-    # # Биномиальное распределение
-    task_2()
-
-    # Геометрическое распределение (3 алгоритма генерации)
-    task_3(irngeo_1, 1)
-    task_3(irngeo_2, 2)
-    task_3(irngeo_3, 3)
-
-    # Пуассоновское распределение (2 алгоритма генерации)
-    task_4(irnpoi, 1)
-    task_4(irnpsn, 2)
-
+    # # Равномерное распределение
+    # task_1()
+    #
+    # # # Биномиальное распределение
+    # task_2()
+    #
+    # # Геометрическое распределение (3 алгоритма генерации)
+    # task_3(irngeo_1, 1)
+    # task_3(irngeo_2, 2)
+    # task_3(irngeo_3, 3)
+    #
+    # # Пуассоновское распределение (2 алгоритма генерации)
+    # task_4(irnpoi, 1)
+    # task_4(irnpsn, 2)
+    #
     additional_task_4()
+
     plt.show()

@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import os
 from LhW import *
-
+import scipy
+import numpy as np
 sample_size = 10000
 
 absolute_path = '/'.join(os.path.dirname(__file__).split('/')[:-1])
@@ -37,19 +38,69 @@ def plot_graphics(task_number, task_name, numbers):
     y_cdf_label = 'F(x)'
     pdf_title = f'Функция плотности распределения - {task_name}'
     cdf_title = f'Функция распределения - {task_name}'
+    y_pdf = []
+    y_cdf = []
+    x = []
+
+    if task_number == 1:
+        x = np.linspace(min(numbers), max(numbers), sample_size)
+        y_pdf = [1 / (max(x) - min(x))] * len(x)
+        y_cdf = [(k - min(x)) / (max(x) - min(x)) for k in x]
+
+    elif task_number == 2:
+        x = np.linspace(min(numbers), max(numbers), sample_size)
+        y_pdf = scipy.stats.norm.pdf(x, loc=0, scale=1)
+        y_cdf = scipy.stats.norm.cdf(x, loc=0, scale=1)
+
+    elif task_number == 3:
+        x = np.linspace(min(numbers), max(numbers), sample_size)
+        y_pdf = scipy.stats.expon.pdf(x, scale=1)
+        y_cdf = scipy.stats.expon.cdf(x, scale=1)
+
+    elif task_number == 4:
+        # df == n - number of freedom degrees
+        x = np.linspace(min(numbers), max(numbers), sample_size)
+        y_pdf = scipy.stats.chi2.pdf(x, df=10)
+        y_cdf = scipy.stats.chi2.cdf(x, df=10)
+
+    elif task_number == 5:
+        x = np.linspace(min(numbers), max(numbers), sample_size)
+        y_pdf = scipy.stats.t.pdf(x,  df=10)
+        y_cdf = scipy.stats.t.cdf(x,  df=10)
+
+    elif task_number == 6:
+        x = np.linspace(min(numbers), max(numbers), 100)
+        y_pdf = scipy.stats.erlang.pdf(x, 4, scale=1)
+        y_cdf = scipy.stats.erlang.cdf(x, 4, scale=1)
 
     plt.figure()
     plt.hist(numbers, density=True, edgecolor='black')
+    plt.plot(x, y_pdf, color='red', label='theoretical pdf')
+    plt.xlabel(x_label)
+    plt.ylabel(y_pdf_label)
+    plt.legend()
+    plt.title(pdf_title)
+
+    plt.hist(numbers, density=True, edgecolor='black', color='blue', label=task_name)
     plt.xlabel(x_label)
     plt.ylabel(y_pdf_label)
     plt.title(pdf_title)
+    plt.legend()
     plt.savefig(f'{full_path_graphics}/{task_name}-{task_number}-pdf.png')
 
     plt.figure()
-    plt.hist(numbers, density=True, cumulative=True, edgecolor='black')
+    plt.hist(numbers, density=True, cumulative=True, edgecolor='black', label=task_name)
+    plt.plot(x, y_cdf, color='red',  label='theoretical cdf')
     plt.xlabel(x_label)
     plt.ylabel(y_cdf_label)
     plt.title(cdf_title)
+    plt.legend()
+
+    plt.hist(numbers, density=True, cumulative=True, edgecolor='black',  color='blue')
+    plt.xlabel(x_label)
+    plt.ylabel(y_cdf_label)
+    plt.title(cdf_title)
+    plt.legend()
     plt.savefig(f'{full_path_graphics}/{task_name}-{task_number}-pdf.png')
 
 

@@ -9,10 +9,11 @@
           for mathematical expectation and variance.
 
         3. Mastering methods for assessing communication statistics: calculation
-          autocorrelation function values ​​ and construction
+          autocorrelation function values and construction
           correlograms.
 
         4. Mastering the methods of graphical representation of laws
           distributions: plotting the density function
           distribution and integral distribution function.
+
 

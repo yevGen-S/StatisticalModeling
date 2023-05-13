@@ -32,5 +32,6 @@ def rnstud(n):
     return rnnrm2(0, 1) / math.sqrt(rnchis(n) / n)
 
 
+# erlang distribution
 def rnerlang(beta, k):
     return sum([rnexp(beta) for _ in range(k)])
