@@ -4,7 +4,6 @@ from LhW import *
 import matplotlib.pyplot as plt
 import numpy as np
 import mpmath
-from scipy.stats import chisquare
 
 absolute_path = '/'.join(os.path.dirname(__file__).split('/')[:-1])
 
@@ -243,7 +242,7 @@ if __name__ == '__main__':
     # # Пуассоновское распределение (2 алгоритма генерации)
     # task_4(irnpoi, 1)
     # task_4(irnpsn, 2)
-    #
+
     additional_task_4()
 
     plt.show()

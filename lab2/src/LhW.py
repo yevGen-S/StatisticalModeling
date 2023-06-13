@@ -28,7 +28,7 @@ def irnbin(n, p) -> int:
 def irngeo_1(p) -> int:
     a = random.random()
     p_k = p
-    m = 0
+    m = 1
 
     while a >= p_k:
         a -= p_k
@@ -41,7 +41,7 @@ def irngeo_1(p) -> int:
 # geom_distribution_2
 def irngeo_2(p):
     a = random.random()
-    m = 0
+    m = 1
 
     while a > p:
         a = random.random()
@@ -62,12 +62,12 @@ def irnpoi(mu):
     else:
         a = random.random()
         p_k = math.exp(-mu)
-        m = 1
+        m = 0
 
         while a >= p_k:
+            m += 1
             a -= p_k
             p_k *= mu / m
-            m += 1
 
         return m
 
@@ -78,11 +78,11 @@ def irnpsn(mu):
         return random.normalvariate(mu, mu)
     else:
         p_k = random.random()
-        m = 1
+        m = 0
 
         while p_k >= math.exp(-mu):
-            p_k *= random.random()
             m += 1
+            p_k *= random.random()
 
         return m
 
